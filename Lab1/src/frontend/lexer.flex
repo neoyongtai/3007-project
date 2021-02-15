@@ -28,7 +28,9 @@ import static frontend.Token.Type.*;
 	/* Use this method for rules where you need to process yytext() to get the lexeme of the token.
 	 *
 	 * Useful for string literals; e.g., the quotes around the literal are part of yytext(),
-	 * but they should not be part of the lexeme. 
+	 * but they should not be part of the lexeme.
+     * 
+     * A string literal will have double quotes 
 	*/
 	private Token token(Token.Type type, String text) {
 		if (type == Token.Type.STRING_LITERAL){
@@ -89,20 +91,20 @@ Letter = [a-zA-Z]
 // identifier
 
 // An identifier is a sequence of one or more characters,
-// the first character must be a letter and
-// if there are subsequence character(s),
-// either a letter, digit or an underscore.
+// the first character must be a letter and -> {Letter}
+// if there are subsequent character(s), -> *
+// either a letter, digit or an underscore. -> ({Letter}|{Digit}|_)
 {Letter}({Letter}|{Digit}|_)* { return token(ID, yytext()); }
 
 // literals
 
-// An integer literal is a sequence of one or more digits,
-// and is unsigned.
+// An integer literal is a sequence of one or more digits, -> {Digit}+
+// and is unsigned. -> No need for positive or negative
 {Digit}+ { return token(INT_LITERAL, yytext()); }
 
-// A string literal is a sequence of zero or more characters,
-// enclosed in double quotes,
-// and does not contain either a double quote or a newline character.
+// A string literal is a sequence of zero or more characters, -> *
+// enclosed in double quotes, -> \" \"
+// and does not contain either a double quote or a newline character. -> [^\"\n]
 \"[^\"\n]*\" { return token(STRING_LITERAL, yytext()); }
 
 {WhiteSpace} { }
