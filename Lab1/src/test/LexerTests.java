@@ -190,4 +190,12 @@ public class LexerTests {
 				new Token(ID, 0, 3, "a"),
 				new Token(EOF, 0, 4, ""));
 	}
+	
+	@Test
+	public void testSpacing() {
+		runtest("a   a",
+				new Token(ID, 0, 0, "a"),
+				new Token(ID, 0, 4, "a"),
+				new Token(EOF, 0, 5, ""));
+	}
 }
